@@ -6,21 +6,21 @@ CREATE DATABASE ajj;
 
 --Table Creaation Statements
 CREATE TABLE Employee (
-    id:     INTEGER,
-    ename:  VARCHAR,
-    city:   VARCHAR,
-    cname:  VARCHAR,
-    salary: VARCHAR
+    id:     INTEGER PRIMARY KEY,
+    ename:  VARCHAR(15),
+    city:   VARCHAR(15),
+    cname:  VARCHAR(15),
+    salary: INTEGER
 )
 
 CREATE TABLE Company (
-    cname:  VARCHAR,
+    cname:  VARCHAR(15),
     city:   VARCHAR
 )
 
 CREATE TABLE JobSkill (
     id:     INTEGER,
-    skill:  VARCHAR
+    skill:  VARCHAR (15)
 )
 
 CREATE TABLE Manages (
