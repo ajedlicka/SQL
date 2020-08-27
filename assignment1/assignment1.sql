@@ -46,7 +46,7 @@ INSERT INTO company VALUES
    ('Microsoft', 'Bloomington');
 
 -- Data for the jobskill relation.
-insert into jobskill values
+INSERT INTO jobskill VALUES
  (1001,'Programming'),
  (1001,'AI'),
  (1002,'Programming'),
@@ -107,3 +107,16 @@ INSERT INTO manages VALUES
    (1005, 1011),
    (1013, 1007),
    (1013, 1017);
+
+
+-- SELECTING ITEMS
+--SELECT * FROM employee;
+--SELECT * FROM company;
+SELECT * FROM jobskill;
+--SELECT * FROM manages;
+
+
+drop table if exists employee;
+drop table if exists company;
+drop table if exists jobskill;
+drop table if exists manages;
