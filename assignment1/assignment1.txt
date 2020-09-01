@@ -1,0 +1,87 @@
+Problem 1.2
+
+Example 1 - used from assignment
+create table company(
+   cname text, 
+   city text, 
+   PRIMARY KEY (cname, city));
+
+create table employee(
+   id integer, 
+   ename text,
+   city text,
+   cname text,
+   salary integer,
+   PRIMARY KEY (id),
+   FOREIGN KEY (cname, city) REFERENCES company (cname, city));
+
+create table jobskill(
+   id integer, 
+   skill text, 
+   PRIMARY KEY (id, skill),
+   FOREIGN KEY (id) REFERENCES employee (id));
+
+create table manages(
+   mid integer, 
+   eid integer, 
+   PRIMARY KEY (mid, eid),
+   FOREIGN KEY (mid) REFERENCES employee (id),
+   FOREIGN KEY (eid) REFERENCES employee (id));
+
+
+Example 2 - changing primary key in employee to be ename instead of id
+create table company(
+   cname text, 
+   city text, 
+   PRIMARY KEY (cname, city));
+
+create table employee(
+   id integer, 
+   ename text,
+   city text,
+   cname text,
+   salary integer,
+   PRIMARY KEY (salary),
+   FOREIGN KEY (cname, city) REFERENCES company (cname, city));
+
+create table jobskill(
+   id integer, 
+   skill text, 
+   PRIMARY KEY (id, skill),
+   FOREIGN KEY (id) REFERENCES employee (id));
+
+create table manages(
+   mid integer, 
+   eid integer, 
+   PRIMARY KEY (mid, eid),
+   FOREIGN KEY (mid) REFERENCES employee (id),
+   FOREIGN KEY (eid) REFERENCES employee (id));
+
+
+Example 3 - changing primary key of manages to be mid instead of (mid, eid)
+create table company(
+   cname text, 
+   city text, 
+   PRIMARY KEY (cname, city));
+
+create table employee(
+   id integer, 
+   ename text,
+   city text,
+   cname text,
+   salary integer,
+   PRIMARY KEY (salary),
+   FOREIGN KEY (cname, city) REFERENCES company (cname, city));
+
+create table jobskill(
+   id integer, 
+   skill text, 
+   PRIMARY KEY (id, skill),
+   FOREIGN KEY (id) REFERENCES employee (id));
+
+create table manages(
+   mid integer, 
+   eid integer, 
+   PRIMARY KEY (mid, eid),
+   FOREIGN KEY (mid) REFERENCES employee (id),
+   FOREIGN KEY (eid) REFERENCES employee (id));
