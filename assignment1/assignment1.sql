@@ -1,3 +1,4 @@
+\o assignment1.txt
 -- Creating database with my initials
 CREATE DATABASE ajj;
 
@@ -138,14 +139,14 @@ SELECT * FROM manages;
 
 \qecho Problem 2.1
 
-SELECT e.id, e.ename, e.salary 
+SELECT DISTINCT e.id, e.ename, e.salary 
 FROM employee e 
 WHERE e.city = 'Indianapolis' AND e.salary BETWEEN 30000 AND 50000
 ORDER BY e.id;
 
 \qecho Problem 2.2
 
-SELECT e1.id, e1.ename
+SELECT DISTINCT e1.id, e1.ename
 FROM employee e1, manages m, (SELECT e.id, e.city 
                               FROM employee e 
                               WHERE e.city = 'Bloomington') e2, 
@@ -198,7 +199,7 @@ ORDER BY c.cname;
 
 \qecho Problem 2.8
 
-SELECT e.cname, e.id
+SELECT DISTINCT e.cname, e.id
 FROM employee e
 WHERE e.salary >= ALL(SELECT e1.salary 
                       FROM employee e1)
@@ -206,7 +207,7 @@ ORDER BY e.cname;
 
 \qecho Problem 2.9
 
-SELECT e.id, e.ename
+SELECT DISTINCT e.id, e.ename
 FROM employee e
 WHERE e.salary >= ALL(SELECT e1.salary 
                       FROM employee e1, manages m 

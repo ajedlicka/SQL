@@ -1,5 +1,4 @@
 CREATE DATABASE
-You are now connected to database "ajj" as user "andyjedlicka".
 CREATE TABLE
 CREATE TABLE
 CREATE TABLE
@@ -218,5 +217,4 @@ Problem 2.10
  1016 | YinYue
 (2 rows)
 
-You are now connected to database "postgres" as user "andyjedlicka".
 DROP DATABASE
