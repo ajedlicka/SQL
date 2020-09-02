@@ -1,8 +1,10 @@
-drop table if exists jobskill;
-drop table if exists manages;
-drop table if exists employee;
-drop table if exists company;
+-- Creating database with my initials
+CREATE DATABASE ajj;
 
+--Connecting database 
+\c ajj; 
+
+--Table Creation Statements
 create table company(
    cname text, 
    city text, 
@@ -30,7 +32,7 @@ create table manages(
    FOREIGN KEY (mid) REFERENCES employee (id),
    FOREIGN KEY (eid) REFERENCES employee (id));
 
--- Data for the company relation.
+-- Populating Tables
 INSERT INTO company VALUES
    ('Apple', 'Bloomington'),
    ('Apple', 'Indianapolis'),
@@ -44,7 +46,6 @@ INSERT INTO company VALUES
    ('Netflix', 'Chicago'),
    ('Microsoft', 'Bloomington');
 
-   -- Data for the employee relation.
 INSERT INTO employee VALUES
    (1001,'Jean','Bloomington','Apple',60000),
    (1002,'Vidya', 'Indianapolis', 'Apple', 45000),
@@ -65,7 +66,6 @@ INSERT INTO employee VALUES
    (1017,'Latha', 'Indianapolis', 'Netflix', 60000),
    (1018,'Arif', 'Bloomington', 'Apple', 50000);
 
--- Data for the jobskill relation.
 INSERT INTO jobskill VALUES
    (1001,'Programming'),
    (1001,'AI'),
@@ -108,7 +108,6 @@ INSERT INTO jobskill VALUES
    (1017,'Programming'),
    (1018,'AI');
 
--- Data for the manages  relation.
 INSERT INTO manages VALUES
    (1001, 1002),
    (1001, 1009),
@@ -127,99 +126,109 @@ INSERT INTO manages VALUES
    (1013, 1007),
    (1013, 1017);
 
+-- Queries
 
--- Problem 1.1
+\qecho Problem 1.1
+
 SELECT * FROM employee;
+\qecho Added 3 entries to company to reconcile employee records 1002, 1005, 1008
 SELECT * FROM company;
 SELECT * FROM jobskill;
 SELECT * FROM manages;
 
--- Problem 2.1
+\qecho Problem 2.1
+
 SELECT e.id, e.ename, e.salary 
 FROM employee e 
-WHERE e.city = 'Indianapolis' 
-AND e.salary BETWEEN 30000 AND 50000
+WHERE e.city = 'Indianapolis' AND e.salary BETWEEN 30000 AND 50000
 ORDER BY e.id;
 
--- Problem 2.2
+\qecho Problem 2.2
+
 SELECT e1.id, e1.ename
-FROM employee e1, 
-manages m, 
-(SELECT e.id, e.city FROM employee e WHERE e.city = 'Bloomington') e2, 
-(SELECT c.cname FROM company c WHERE c.city = 'Chicago') c
-WHERE e1.id = m.eid
-AND e2.id = m.mid
-AND e1.cname = c.cname
+FROM employee e1, manages m, (SELECT e.id, e.city 
+                              FROM employee e 
+                              WHERE e.city = 'Bloomington') e2, 
+                             (SELECT c.cname 
+                              FROM company c 
+                              WHERE c.city = 'Chicago') c
+WHERE e1.id = m.eid AND e2.id = m.mid AND e1.cname = c.cname
 ORDER BY e1.id;
 
--- Problem 2.3
+\qecho Problem 2.3
+
 SELECT DISTINCT e1.id, e1.ename
 FROM employee e1, employee e2, manages m
-WHERE e1.id = m.eid
-AND e2.id = m.mid
-AND e1.city = e2.city
+WHERE e1.id = m.eid AND e2.id = m.mid AND e1.city = e2.city
 ORDER BY e1.id;
 
--- Problem 2.4
+\qecho Problem 2.4
+
 SELECT DISTINCT e.id, e.ename
 FROM employee e, jobskill j1, jobskill j2, jobskill j3
-WHERE e.id = j1.id
-AND e.id = j2.id
-AND e.id = j3.id
-AND j1.skill <> j2.skill
-AND j2.skill <> j3.skill
-AND j3.skill <> j1.skill
+WHERE e.id = j1.id AND e.id = j2.id AND e.id = j3.id AND j1.skill <> j2.skill AND j2.skill <> j3.skill AND j3.skill <> j1.skill
 ORDER BY e.id;
 
--- Problem 2.5
+\qecho Problem 2.5
+
 SELECT DISTINCT e1.id, e1.ename, e1.salary
-FROM manages m, 
-employee e1,
-(SELECT e1.id FROM employee e1, employee e2, jobskill j, manages m WHERE e1.id = m.mid AND e2.id = m.eid AND e2.id = j.id AND j.skill = 'Programming') e2
-WHERE e1.id = m.mid
-AND e2.id = m.eid
+FROM manages m, employee e1, (SELECT e1.id 
+                              FROM employee e1, employee e2, jobskill j, manages m 
+                              WHERE e1.id = m.mid AND e2.id = m.eid AND e2.id = j.id AND j.skill = 'Programming') e2
+WHERE e1.id = m.mid AND e2.id = m.eid
 ORDER BY e1.id;
 
--- Problem 2.6
+\qecho Problem 2.6
+
 SELECT DISTINCT e1.id, e2.id
 FROM employee e1, employee e2, employee e3, manages m1
-WHERE e1.id = m1.eid
-AND e2.id IN 
-(SELECT e4.id FROM employee e4, manages m2 WHERE e4.id = m2.eid AND e3.id = m2.mid AND m1.mid = m2.mid AND NOT e4.id = e1.id)
-AND e3.id = m1.mid
+WHERE e1.id = m1.eid AND e3.id = m1.mid AND e2.id IN (SELECT e4.id 
+                                                      FROM employee e4, manages m2 
+                                                      WHERE e4.id = m2.eid AND e3.id = m2.mid AND m1.mid = m2.mid AND NOT e4.id = e1.id)
 ORDER BY e1.id;
 
--- Problem 2.7
+\qecho Problem 2.7
+
 SELECT DISTINCT c.cname
 FROM company c
-WHERE c.cname NOT IN 
-(SELECT e.cname FROM employee e WHERE e.city = 'Bloomington')
+WHERE c.cname NOT IN (SELECT e.cname 
+                      FROM employee e 
+                      WHERE e.city = 'Bloomington')
 ORDER BY c.cname;
 
--- Problem 2.8
+\qecho Problem 2.8
+
 SELECT e.cname, e.id
 FROM employee e
-WHERE e.salary >= ALL(SELECT e1.salary FROM employee e1)
+WHERE e.salary >= ALL(SELECT e1.salary 
+                      FROM employee e1)
 ORDER BY e.cname;
 
--- Problem 2.9
+\qecho Problem 2.9
+
 SELECT e.id, e.ename
 FROM employee e
-WHERE e.salary >= ALL(SELECT e1.salary FROM employee e1, manages m WHERE e.id = m.eid AND e1.id = m.mid)
+WHERE e.salary >= ALL(SELECT e1.salary 
+                      FROM employee e1, manages m 
+                      WHERE e.id = m.eid AND e1.id = m.mid)
 ORDER BY e.id;
 
--- Problem 2.10
-SELECT e.id, e.ename
-FROM employee e
-WHERE NOT EXISTS 
-   (SELECT j1.skill FROM 
-         jobskill j1,
-         jobskill j2,
-         (SELECT e1.id FROM employee e1, manages m WHERE e.id = m.mid AND e1.id = m.eid) e2
-      WHERE j1.id = e2.id AND j1.skill = j2.skill AND j2.id = e.id);
+\qecho Problem 2.10
 
+SELECT DISTINCT manager.id, manager.ename 
+FROM (SELECT e.id, e.ename 
+      FROM employee e, manages m 
+      WHERE e.id = m.mid) manager
+WHERE NOT EXISTS (SELECT worker.id 
+                  FROM jobskill managerSkill, jobskill workerSkill, (SELECT e.id, e.ename 
+                                                                     FROM employee e, manages m 
+                                                                     WHERE m.mid = manager.id AND e.id = m.eid) worker
+                  WHERE managerSkill.id = manager.id AND workerSkill.id = worker.id AND workerSkill.skill = managerSkill.skill)
+ORDER BY manager.id;
 
-drop table if exists jobskill;
-drop table if exists manages;
-drop table if exists employee;
-drop table if exists company;
+--Connect to default database
+\c postgres;
+
+--Dropping created database
+DROP DATABASE ajj;
+
