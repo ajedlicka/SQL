@@ -1,4 +1,3 @@
-\o assignment1.txt
 -- Creating database with my initials
 CREATE DATABASE ajj;
 
