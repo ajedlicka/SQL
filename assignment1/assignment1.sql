@@ -22,7 +22,7 @@ create table employee(
 create table jobskill(
    id integer, 
    skill text, 
-   PRIMARY KEY (id, skill),
+   PRIMARY KEY (id, kill),
    FOREIGN KEY (id) REFERENCES employee (id));
 
 create table manages(
