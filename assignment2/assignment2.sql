@@ -1,4 +1,5 @@
 -- Creating database with my initials
+DROP DATABASE IF EXISTS ajj;
 CREATE DATABASE ajj;
 
 --Connecting database 
@@ -312,13 +313,49 @@ insert into personskill values
   (23,'Programming'),
   (20,'Programming');
 
-\qecho
+\qecho Problem 1.1
 \qecho Problem 1.1.a
 
 SELECT DISTINCT p.pid, p.name
 FROM person p, knows k, worksfor wf, company c, person p1
 WHERE p.pid = k.pid1 AND p1.pid = k.pid2 AND wf.pid = p.pid AND wf.cname = c.cname AND c.city = 'Bloomington' AND p1.city = 'Chicago'
 ORDER BY p.pid;
+
+\qecho Problem 1.1.b
+
+SELECT DISTINCT p.pid, p.name
+FROM person p
+WHERE p.pid IN (SELECT wf.pid
+                FROM worksfor wf
+                WHERE wf.cname IN (SELECT c.cname
+                                   FROM company c
+                                   WHERE c.city = 'Bloomington'))
+AND p.pid IN (SELECT k.pid1
+              FROM knows k
+              WHERE k.pid2 IN (SELECT p1.pid
+                               FROM person p1
+                               WHERE p1.city = 'Chicago'))
+ORDER BY p.pid;
+
+\qecho Problem 1.1.c
+\qecho Problem 1.1.d
+\qecho Problem 1.2.a
+\qecho Problem 1.2.b
+\qecho Problem 1.2.c
+\qecho Problem 1.2.d
+\qecho Problem 1.3.a
+\qecho Problem 1.3.b
+\qecho Problem 1.3.c
+\qecho Problem 1.3.d
+\qecho Problem 1.4.a
+\qecho Problem 1.4.b
+\qecho Problem 1.5
+\qecho Problem 1.6
+\qecho Problem 1.7
+\qecho Problem 1.8
+
+
+
 
 
 
