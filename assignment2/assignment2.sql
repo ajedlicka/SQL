@@ -564,12 +564,28 @@ SELECT DISTINCT ps.skill, ps1.skill
 FROM personskill ps, personskill ps1
 WHERE NOT EXISTS (SELECT ps2.pid
                   FROM personskill ps2
-                  WHERE ps.skill = ps2.skill AND NOT EXISTS (SELECT ps3.pid
-                                                             FROM (SELECT *
-                                                                   FROM personskill psSub
-                                                                   WHERE psSub.pid = ps2.pid) ps3
-                                                             WHERE ps3.skill = ps1.skill))
+                  WHERE ps.skill = ps2.skill AND NOT IN (SELECT ps3.pid
+                                                        from personskill ps3
+                                                         WHERE ps3.skill = ps1.skill and ps3.pid = ps2.pid))
 ORDER BY ps.skill;
+
+
+list of pair of skills where a person has first but not the second
+
+
+select two skills
+except for skills where a person has the second and not the first
+
+select two skills
+where there isnt a person with the first skill who doesnt have the second skill
+
+SELECT DISTINCT s.skill, s1.skill
+FROM person p, jobskill j, personskill s, personskill s1
+WHERE p.pid = s.pid and s.skill = j.skill;
+intersect
+SELECT distinct js1.skill, js2.skill
+FROM person p1, person p2, personskill sk, jobskill js1, jobskill js2
+WHERE js1.skill = sk.skill and sk.pid = p2.pid and sk.skill = js2.skill and p2.pid != p1.pid;
 
 \qecho Problem 2
 
